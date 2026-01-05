@@ -34,9 +34,6 @@ jobs:
           python -m venv venv
           source venv/bin/activate
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
       # Optional: Add step to run tests here
 
       - name: Zip artifact for deployment
@@ -69,7 +66,10 @@ jobs:
         uses: Azure/functions-action@v1
         id: deploy-to-function
         with:
+          scm-do-build-during-deployment: true
+          enable-oryx-build: true
           app-name: 'pf-freepipeline'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A733D3DEA140417AA93593E2894E27B1 }}
